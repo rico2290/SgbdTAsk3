@@ -4,22 +4,24 @@ import java.io.IOException;
 import java.util.*;
 import java.io.*;
 
-public class Dsp_Managment{
+public class Dsp_Managment extends LerLinhasSeguintes{
 	public Map<Integer,String> bCache = new LinkedHashMap<Integer,String>();
 	
 	String [] lerLinhas;
 	private int qtdLinhasArq = 0;
 	private int meio;
 	private int maisQmeio;
-	
+	private int linhasLidas = 0;
+	private int t;
 
 	public Dsp_Managment(){}
 
 	public void preencherBuffer(int tamanho){
-		String [] n = new String[tamanho];
-		String []str = new String[tamanho];
-		String [] down = new String[tamanho];
-		meio = tamanho/2;
+		this.t = tamanho;
+		String [] n = new String[t];
+		String []str = new String[t];
+		String [] down = new String[t];
+		meio = t/2;
 		maisQmeio = meio +1;
 		String ler = null;
 
@@ -43,19 +45,20 @@ public class Dsp_Managment{
 			BufferedReader br = new BufferedReader(fr);
 			//ler=br.readLine();
 			//System.err.printf("\n"+ler);
-			for (int i=0;i < tamanho; i++){
+			for (int i=0;i < t; i++){
 					//if (br.readLine()!= null) {
 						ler = br.readLine();
 						lerLinhas = ler.split("[|]");
 						n[i]= lerLinhas[1];
 						str[i] = lerLinhas[4];
-
+						linhasLidas++
 
 					//}
 				
 				System.out.println(" " +n[i]+ "--->"+str[i]);
 				this.bCache.put(i,ler);
 			}
+
 						
 
 		}catch(IOException e){
@@ -63,8 +66,14 @@ public class Dsp_Managment{
 		}
 		//mergeS(n,down,0,inicial);
 	}
+	while (linhasLidas < qtdLinhasArq) {
+		linhasLidas = lerLinhasSeguintes(t,linhasLidas,qtdLinhasArq);
+		
 
-
+		
+	}
+		
+	
 	public void mergeS( String[] origin, String [] strAux, int inicio , int fim){
 		if (inicio < fim) {
 			int m = (inicio + fim)/2;
@@ -73,6 +82,7 @@ public class Dsp_Managment{
 			
 		}
 	}
+
 
 
 	public void intercalar(String [] str1Origin, String [] str2Aux, int inicio,int meio, int fim ){
@@ -86,10 +96,10 @@ public class Dsp_Managment{
 
 			for (int cont=inicio;cont<=fim ;cont++ ) {
 				if (i > meio) {
-					str1Origin[cont] = str2Aux[j++]; // a parte 1 mais rapida do que a 2
+					str1Origin[cont] = str2Aux[j++]; // a partição 1 mais rapida do que a 2
 					
 				}else if (j > fim) {
-					str1Origin[cont] = str2Aux[i++]; // a parte 2 mais rapaida que a 1
+					str1Origin[cont] = str2Aux[i++]; // a partição 2 mais rapaida que a 1
 				}else if (str2Aux[i].compareTo(str2Aux[j])< 0) {
 					str1Origin[cont] = str2Aux[i++];
 				}else
