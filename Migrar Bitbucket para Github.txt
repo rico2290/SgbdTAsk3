@@ -1,0 +1,7 @@
+
+PRIMEIRAMENTE, clone seu repositorio num local
+aceda seu repo -- seu diretorio bitbucket (origin) --
+===== Digitas as seguintes =============
+$ git remote rename origin bitbucket
+$ git remote add origin -- coloca aqui link do repo github --
+$ git push origin master
